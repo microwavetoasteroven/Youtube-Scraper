@@ -48,6 +48,7 @@ EOF
 
 # Create a .gitignore file
 cat << EOF > .gitignore
+/venv
 __pycache__/
 *.pyc
 .env
