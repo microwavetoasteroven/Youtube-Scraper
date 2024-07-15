@@ -1,4 +1,3 @@
 fastapi
 uvicorn[standard]
 pytest
-google-api-python-client

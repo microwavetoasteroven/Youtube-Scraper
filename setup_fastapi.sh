@@ -8,8 +8,7 @@ mkdir $PROJECT_NAME
 cd $PROJECT_NAME
 
 # Create app directory and initial files
-mkdir app tests
-mkdir app/util
+mkdir -p tests/tests app/util
 touch app/__init__.py tests/__init__.py
 
 # Create main FastAPI application file
@@ -44,6 +43,7 @@ cat << EOF > requirements.txt
 fastapi
 uvicorn[standard]
 pytest
+google-api-python-client
 EOF
 
 # Create a .gitignore file
@@ -56,13 +56,13 @@ EOF
 
 # Create .env
 cat << EOF > .env
+# Environment variables
 EOF
 
 # Create config file
 cat << EOF > app/config.py
+# Configuration settings
 EOF
-
-
 
 # Create README.md
 cat << EOF > README.md
@@ -70,7 +70,6 @@ cat << EOF > README.md
 This is a minimal FastAPI project setup.
 
 ## Running the Application
-
 To run the application, use:
 \`\`\`bash
 uvicorn app.main:app --reload
@@ -85,10 +84,11 @@ EOF
 
 # Setup Python virtual environment
 python3 -m venv venv
-source venv/bin/activate
 
 # Install Python packages
+venv/bin/pip install --upgrade pip
 venv/bin/pip install -r requirements.txt
 
 echo "Setup completed. Virtual environment created and dependencies installed."
-echo "Activate the virtual environment with 'source venv/bin/activate'."
+echo "To activate the virtual environment, run:"
+echo "source $PROJECT_NAME/venv/bin/activate"
