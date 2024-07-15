@@ -9,7 +9,7 @@ cd $PROJECT_NAME
 
 # Create app directory and initial files
 mkdir -p tests/tests app/util
-touch app/__init__.py tests/__init__.py
+touch app/__init__.py tests/__init__.py app/util/__init__.py
 
 # Create main FastAPI application file
 cat << EOF > app/main.py
