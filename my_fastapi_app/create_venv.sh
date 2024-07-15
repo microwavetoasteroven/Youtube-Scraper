@@ -7,4 +7,4 @@ venv/bin/pip install -r requirements.txt
 
 echo "Setup completed. Virtual environment created and dependencies installed."
 echo "To activate the virtual environment, run:"
-echo "source my_fastapi_app/venv/bin/activate"
+echo "source ./venv/bin/activate"
