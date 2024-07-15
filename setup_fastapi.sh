@@ -57,6 +57,10 @@ EOF
 cat << EOF > .env
 EOF
 
+# Create config file
+cat << EOF > app/config.py
+EOF
+
 # Create README.md
 cat << EOF > README.md
 # $PROJECT_NAME
