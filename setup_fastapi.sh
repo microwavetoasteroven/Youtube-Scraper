@@ -94,7 +94,7 @@ venv/bin/pip install -r requirements.txt
 
 echo "Setup completed. Virtual environment created and dependencies installed."
 echo "To activate the virtual environment, run:"
-echo "source $PROJECT_NAME/venv/bin/activate"
+echo "source ./venv/bin/activate"
 EOF
 chmod +x create_venv.sh
 
