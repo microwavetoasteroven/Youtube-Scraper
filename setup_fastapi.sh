@@ -53,6 +53,10 @@ __pycache__/
 .DS_Store
 EOF
 
+# Create .env
+cat << EOF > .env
+EOF
+
 # Create README.md
 cat << EOF > README.md
 # $PROJECT_NAME
