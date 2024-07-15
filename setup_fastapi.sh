@@ -96,6 +96,7 @@ echo "Setup completed. Virtual environment created and dependencies installed."
 echo "To activate the virtual environment, run:"
 echo "source $PROJECT_NAME/venv/bin/activate"
 EOF
+chmod +x create_venv.sh
 
 # Setup Python virtual environment
 python3 -m venv venv
