@@ -1,10 +1,14 @@
 from googleapiclient.discovery import build
+from app.config import config
 
-# Replace 'YOUR_API_KEY' with your actual API key
-api_key = 'YOUR_API_KEY'
-youtube = build('youtube', 'v3', developerKey=api_key)
+
+
+def yt():
+    api_key = config.YOUTUBE_API
+    return build('youtube', 'v3', developerKey=api_key)
 
 def search_videos_by_keyword(keyword, max_results=10):
+    youtube = yt()
     request = youtube.search().list(
         part="snippet",
         q=keyword,
