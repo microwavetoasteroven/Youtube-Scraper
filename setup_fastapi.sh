@@ -9,6 +9,7 @@ cd $PROJECT_NAME
 
 # Create app directory and initial files
 mkdir app tests
+mkdir app/util
 touch app/__init__.py tests/__init__.py
 
 # Create main FastAPI application file
@@ -60,6 +61,8 @@ EOF
 # Create config file
 cat << EOF > app/config.py
 EOF
+
+
 
 # Create README.md
 cat << EOF > README.md
