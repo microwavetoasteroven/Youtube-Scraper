@@ -88,7 +88,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install Python packages
-pip install -r requirements.txt
+venv/bin/pip install -r requirements.txt
 
 echo "Setup completed. Virtual environment created and dependencies installed."
 echo "Activate the virtual environment with 'source venv/bin/activate'."
