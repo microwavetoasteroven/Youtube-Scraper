@@ -71,9 +71,13 @@ cat << EOF > README.md
 This is a minimal FastAPI project setup.
 
 ## Setting up venv
-To create your python virtual environment and install dependencies, use: 
+To create your python virtual environment and install dependencies, use:
 
 ./create_venv.sh
+
+## Activate venv
+To activate your venv, from root directory my_fastapi_app, use:
+source ./venv/bin/activate
 
 ## Running the Application
 To run the application, from root directoy my_fastapi_app, use:
