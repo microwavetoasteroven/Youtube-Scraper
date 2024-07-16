@@ -3,12 +3,22 @@ from app.util.arxiv import safe_search_arxiv
 from fastapi import FastAPI, Query
 from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.util.neo4j_manager import create_paper
 import json
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000", "http://localhost:8000"],  # Add all origins you need
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
