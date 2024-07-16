@@ -1,9 +1,7 @@
 from googleapiclient.discovery import build
 from app.config import config
-from functools import lru_cache
 import json
 
-@lru_cache
 def yt():
     api_key = config.YOUTUBE_API
     return build('youtube', 'v3', developerKey=api_key)
