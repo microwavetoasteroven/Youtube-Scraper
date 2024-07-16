@@ -6,9 +6,8 @@ def yt():
     api_key = config.YOUTUBE_API
     return build('youtube', 'v3', developerKey=api_key)
 
-@lru_cache(maxsize=20)
 def search_videos_by_keyword(keyword, max_results=10, max_pages=5):
-    youtube = yt()
+    youtube = yt()  # Make sure this function returns a configured YouTube client
     next_token = None
     page_count = 0
 
@@ -25,16 +24,12 @@ def search_videos_by_keyword(keyword, max_results=10, max_pages=5):
         for item in response['items']:
             video_id = item['id']['videoId']
             title = item['snippet']['title']
-            # Instead of printing, yield each video as a dictionary
-            yield {'video_id': video_id, 'title': title}
+            description = item['snippet']['description']
+            print(response)
+            # Ensure you're yielding a properly formatted JSON string
+            yield f"data: {{\"video_id\": \"{video_id}\", \"title\": \"{title.replace('"', '\\"')}\", \"description\":\"{description.replace('"', '\\"')}\"}}\n\n"
 
         next_token = response.get('nextPageToken')
         if not next_token:
-            break  # Exit the loop if there's no more pages
-
-        page_count += 1  # Increment the page count
-
-
-
-
-
+            break
+        page_count += 1
