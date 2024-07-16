@@ -63,8 +63,9 @@ async def arxiv_search_with_neo4j(query: str = Query(default="quantum computing"
                 pdf_url=paper_details["pdf_url"],
                 published=paper_details["published"],
                 updated=paper_details["updated"]
+                # keywords and institution are omitted as they are not present in paper_details
             )
-            
+
             # Yield the result for streaming
             yield result
 
