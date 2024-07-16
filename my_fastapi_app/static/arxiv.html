@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search arXiv Papers</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>arXiv Paper Search</h1>
+    <form id="searchForm">
+        <input type="text" name="query" placeholder="Enter search term for papers">
+        <button type="submit">Search</button>
+    </form>
+    <div id="paper-info"></div>
+
+    <script>
+        const form = document.getElementById('searchForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const query = formData.get('query');
+
+            // Ensure any existing EventSource is closed
+            if (window.evtSource) {
+                window.evtSource.close();
+            }
+
+            // Create a new EventSource instance for arXiv search
+            window.evtSource = new EventSource(`http://localhost:8000/arxiv_search?query=${encodeURIComponent(query)}`);
+            window.evtSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                const paperEntry = document.createElement('p');
+                paperEntry.innerHTML = `<strong>Title:</strong> ${data.title} <br>
+                                        <strong>Authors:</strong> ${data.authors} <br>
+                                        <strong>Summary:</strong> ${data.abstract} <br>
+                                        <strong>PDF URL:</strong> <a href="${data.pdf_url}" target="_blank">Download PDF</a>`;
+                document.getElementById('paper-info').appendChild(paperEntry);
+            };
+            window.evtSource.onerror = function(err) {
+                console.error("EventSource failed:", err);
+                window.evtSource.close();
+            };
+        });
+    </script>
+</body>
+</html>
