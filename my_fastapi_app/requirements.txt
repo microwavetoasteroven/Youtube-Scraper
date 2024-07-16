@@ -3,3 +3,4 @@ uvicorn[standard]
 pytest
 google-api-python-client
 arxiv
+neo4j
