@@ -1,42 +1,66 @@
 /* styles.css */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 20px;
     color: #333;
+    line-height: 1.6;
 }
 
 h1 {
     color: #0056b3;
+    font-size: 24px;
 }
 
 form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 input[type="text"] {
+    flex-grow: 1;
     padding: 10px;
-    margin-right: 10px;
-    width: 300px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 4px;
+    margin-right: 10px;
+    font-size: 16px;
 }
 
 button {
     padding: 10px 20px;
-    background-color: #0056b3;
+    background: linear-gradient(to right, #0061ff, #00bcff);
     color: white;
     border: none;
     border-radius: 4px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 button:hover {
-    background-color: #004494;
+    background: linear-gradient(to right, #0051ea, #00a3ea);
 }
 
 #video-info {
     background: #fff;
     border: 1px solid #ddd;
-    padding: 10px;
-    margin
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 300px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+#video-info p {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
