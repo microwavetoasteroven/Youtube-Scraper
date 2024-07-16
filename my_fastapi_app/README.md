@@ -15,6 +15,13 @@ To run the application, from root directoy my_fastapi_app, use:
 
 uvicorn app.main:app --reload
 
+## Run neo4j and login
+docker-compose up -d
+docker-compose down
+http://localhost:7474
+username: neo4j
+password: password
+
 ## Testing
 Run tests with pytest:
 
