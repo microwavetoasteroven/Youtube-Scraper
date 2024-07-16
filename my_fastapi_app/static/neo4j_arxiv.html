@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search arXiv Papers and Add to Neo4j</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>arXiv Paper Search and Neo4j Integration</h1>
+    <form id="neo4jSearchForm">
+        <input type="text" name="query" placeholder="Enter search term for papers">
+        <button type="submit">Search</button>
+    </form>
+    <div id="neo4j-paper-info"></div>
+
+    <script>
+        const form = document.getElementById('neo4jSearchForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const query = formData.get('query');
+
+            // Ensure any existing EventSource is closed
+            if (window.neo4jEvtSource) {
+                window.neo4jEvtSource.close();
+            }
+
+            // Create a new EventSource instance for arXiv search with Neo4j integration
+            window.neo4jEvtSource = new EventSource(`http://localhost:8000/arxiv_search_with_neo4j?query=${encodeURIComponent(query)}`);
+            window.neo4jEvtSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                const paperEntry = document.createElement('p');
+                paperEntry.innerHTML = `<strong>Title:</strong> ${data.title} <br>
+                                        <strong>Authors:</strong> ${data.authors} <br>
+                                        <strong>Summary:</strong> ${data.abstract} <br>
+                                        <strong>PDF URL:</strong> <a href="${data.pdf_url}" target="_blank">Download PDF</a>`;
+                document.getElementById('neo4j-paper-info').appendChild(paperEntry);
+            };
+            window.neo4jEvtSource.onerror = function(err) {
+                console.error("EventSource failed:", err);
+                window.neo4jEvtSource.close();
+            };
+        });
+    </script>
+</body>
+</html>
