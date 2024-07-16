@@ -1,11 +1,15 @@
 from neo4j import GraphDatabase
+from neo4j.exceptions import ConstraintError
 
 def create_paper(uri, user, password, title, authors, abstract, pdf_url, published, updated):
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    with driver.session() as session:
-        result = session.write_transaction(_create_and_return_paper, title, authors, abstract, pdf_url, published, updated)
-    driver.close()
-    return result
+    with GraphDatabase.driver(uri, auth=(user, password)) as driver:
+        with driver.session() as session:
+            try:
+                result = session.write_transaction(_create_and_return_paper, title, authors, abstract, pdf_url, published, updated)
+            except ConstraintError as e:
+                print(f"Constraint error: {e}")
+                result = session.write_transaction(_update_paper, title, authors, abstract, pdf_url, published, updated)
+            return result
 
 def _create_and_return_paper(tx, title, authors, abstract, pdf_url, published, updated):
     query = (
@@ -17,19 +21,13 @@ def _create_and_return_paper(tx, title, authors, abstract, pdf_url, published, u
                     pdf_url=pdf_url, published=published, updated=updated)
     return result.single()[0]
 
-def find_paper_by_title(uri, user, password, title):
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    with driver.session() as session:
-        result = session.read_transaction(_find_and_return_paper, title)
-    driver.close()
-    return result
-
-def _find_and_return_paper(tx, title):
+def _update_paper(tx, title, authors, abstract, pdf_url, published, updated):
     query = (
         "MATCH (p:Paper {title: $title}) "
-        "RETURN p.title, p.authors, p.abstract, p.pdf_url, p.published, p.updated"
+        "SET p.authors = $authors, p.abstract = $abstract, p.pdf_url = $pdf_url, "
+        "p.published = $published, p.updated = $updated "
+        "RETURN p"
     )
-    result = tx.run(query, title=title)
-    return [record["p"] for record in result]
-
-
+    result = tx.run(query, title=title, authors=authors, abstract=abstract, 
+                    pdf_url=pdf_url, published=published, updated=updated)
+    return result.single()[0]
