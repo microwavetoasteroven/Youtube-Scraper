@@ -1,10 +1,8 @@
 from app.util.youtube_api import search_videos_by_keyword
 from app.util.arxiv import safe_search_arxiv
-from starlette.responses import StreamingResponse
-from fastapi import FastAPI, Request, Query
-from fastapi.responses import HTMLResponse, StreamingResponse
-from starlette.templating import Jinja2Templates
-import time
+from fastapi import FastAPI, Query
+from fastapi.responses import StreamingResponse
+from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
