@@ -3,7 +3,6 @@ import re
 
 def read_my_docs(input_dir: str = "./data"):
     reader = SimpleDirectoryReader(input_dir=input_dir, recursive=True)
-    extracted = []
     for docs in reader.iter_data():
         body = ''.join([chunk.text for chunk in docs])
         cleaned_text = re.sub(' +', ' ', body.replace('\n', ' '))
