@@ -1,7 +1,6 @@
 from app.util.youtube_api import search_videos_by_keyword
 from app.util.arxiv import safe_search_arxiv
 from app.util.llama_docs import read_my_docs
-from app.util.stream_consumer import video_generator
 from fastapi import FastAPI, Query
 from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
