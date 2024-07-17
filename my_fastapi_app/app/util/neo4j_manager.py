@@ -2,24 +2,23 @@ from neo4j import GraphDatabase
 from neo4j.exceptions import ConstraintError
 
 def create_paper(uri, user, password, title, authors, abstract, pdf_url, published, updated, keywords=None, institution=None):
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    with driver.session() as session:
-        try:
-            result = session.write_transaction(
-                _create_and_return_paper, title, authors, abstract, pdf_url, published, updated, keywords, institution)
-            if not result:
-                print(f"No result returned from the creation query for paper: {title}")
-            else:
-                print(f"Successfully created/updated paper: {title}")
-        except ConstraintError as e:
-            print(f"Constraint error: {e}")
-            result = session.write_transaction(
-                _update_paper, title, authors, abstract, pdf_url, published, updated, keywords, institution)
-            if not result:
-                print(f"No result returned from the update query for paper: {title}")
-            else:
-                print(f"Successfully updated paper: {title}")
-    driver.close()
+    with GraphDatabase.driver(uri, auth=(user, password)) as driver:
+        with driver.session() as session:
+            try:
+                result = session.write_transaction(
+                    _create_and_return_paper, title, authors, abstract, pdf_url, published, updated, keywords, institution)
+                if not result:
+                    print(f"No result returned from the creation query for paper: {title}")
+                else:
+                    print(f"Successfully created/updated paper: {title}")
+            except ConstraintError as e:
+                print(f"Constraint error: {e}")
+                result = session.write_transaction(
+                    _update_paper, title, authors, abstract, pdf_url, published, updated, keywords, institution)
+                if not result:
+                    print(f"No result returned from the update query for paper: {title}")
+                else:
+                    print(f"Successfully updated paper: {title}")
     return result
 
 def _create_and_return_paper(tx, title, authors, abstract, pdf_url, published, updated, keywords, institution):

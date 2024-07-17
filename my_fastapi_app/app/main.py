@@ -1,5 +1,6 @@
 from app.util.youtube_api import search_videos_by_keyword
 from app.util.arxiv import safe_search_arxiv
+from app.util.llama_docs import read_my_docs
 from fastapi import FastAPI, Query
 from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -7,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.util.neo4j_manager import create_paper
 import json
+import re
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -37,6 +39,16 @@ async def arxiv_search(query: str = Query(default="quantum computing", descripti
     Endpoint to search arXiv and stream results using Server-Sent Events.
     """
     return StreamingResponse(safe_search_arxiv(query), media_type="text/event-stream")
+
+@app.get("/document_loader")
+async def document_loader():
+    """
+    Endpoint to load all documents from data folder
+    """
+    data = read_my_docs()
+
+    cleaned_text = re.sub(' +', ' ', ' '.join([dict(x)['text'] for x in data]).replace('\n', ' '))
+    return cleaned_text
 
 @app.get("/arxiv_search_with_neo4j")
 async def arxiv_search_with_neo4j(query: str = Query(default="quantum computing", description="Query to search for in arXiv")):
