@@ -1,12 +1,14 @@
 from googleapiclient.discovery import build
 from app.config import config
 import json
+import os
+import datetime
 
 def yt():
     api_key = config.YOUTUBE_API
     return build('youtube', 'v3', developerKey=api_key)
 
-def search_videos_by_keyword(keyword, max_results=10, max_pages=5):
+def search_videos_by_keyword(keyword, max_results=1, max_pages=1):
     youtube = yt()  # Retrieve the configured YouTube client
     next_token = None
     page_count = 0
@@ -19,7 +21,18 @@ def search_videos_by_keyword(keyword, max_results=10, max_pages=5):
             pageToken=next_token,
             type="video"
         )
+
         response = request.execute()
+        file_name = f"{datetime.datetime.now():%Y%m%d_%H%M%S}_{keyword}.txt"
+        folder_path = "./youtube_search"
+
+    # Define the full path to the file
+        file_path = os.path.join(folder_path, file_name)
+
+    # Write the output to the file
+        with open(file_path, "w") as file:
+            file.write(json.dumps(response))
+        print(f"Output written to {file_path}")
 
         for item in response['items']:
             video_info = {
