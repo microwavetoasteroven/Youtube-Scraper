@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from app.util.neo4j_manager import create_paper
 import json
 import re
+import os
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -48,6 +49,20 @@ async def document_loader():
     data = read_my_docs()
 
     cleaned_text = re.sub(' +', ' ', ' '.join([dict(x)['text'] for x in data]).replace('\n', ' '))
+    print("Current working directory:", os.getcwd())
+    # Define the folder path and file name
+    folder_path = "./cleaned_data"
+    file_name = "output.txt"
+
+    # Define the full path to the file
+    file_path = os.path.join(folder_path, file_name)
+
+    # Write the output to the file
+    with open(file_path, "w") as file:
+        file.write(cleaned_text)
+
+    print(f"Output written to {file_path}")
+
     return cleaned_text
 
 @app.get("/arxiv_search_with_neo4j")
