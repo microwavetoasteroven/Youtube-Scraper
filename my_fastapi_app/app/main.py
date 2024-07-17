@@ -32,7 +32,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/youtube_search")
 async def youtube_search(keyword: str = Query(default="GraphRag")):
-    video_generator = search_videos_by_keyword(keyword=keyword, max_results=10, max_pages=5)
+    video_generator = search_videos_by_keyword(keyword=keyword, max_results=1, max_pages=1)
     return StreamingResponse(video_generator, media_type="text/event-stream")
 
 @app.get("/arxiv_search")
