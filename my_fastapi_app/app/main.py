@@ -30,23 +30,6 @@ async def root():
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/stream")
-async def stream(urls: str = Query(...)):
-    url_list = urls.split(",")
-    return StreamingResponse(video_generator(url_list), media_type="text/event-stream")
-
-
-
-@app.get("/stream-counter")
-async def stream_counter(start: int = 0, delay: float = 1.0):
-    async def counter_generator(start: int = 0, delay: float = 1.0):
-        count = start
-        while True:
-            yield f"data: {count}\n\n"
-            count += 1
-            await asyncio.sleep(delay)
-    return StreamingResponse(counter_generator(start, delay), media_type="text/event-stream")
-
 
 @app.get("/youtube_search")
 async def youtube_search(keyword: str = Query(default="GraphRag")):
