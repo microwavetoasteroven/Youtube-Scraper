@@ -1,6 +1,7 @@
 from app.util.youtube_api import search_videos_by_keyword
 from app.util.arxiv import safe_search_arxiv
 from app.util.llama_docs import read_my_docs
+from app.util.stream_consumer import video_generator
 from fastapi import FastAPI, Query
 from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -8,8 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.util.neo4j_manager import create_paper
 import json
-import re
 import os
+import asyncio
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -28,6 +29,24 @@ async def root():
     return {"message": "Hello World"}
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/stream")
+async def stream(urls: str = Query(...)):
+    url_list = urls.split(",")
+    return StreamingResponse(video_generator(url_list), media_type="text/event-stream")
+
+
+
+@app.get("/stream-counter")
+async def stream_counter(start: int = 0, delay: float = 1.0):
+    async def counter_generator(start: int = 0, delay: float = 1.0):
+        count = start
+        while True:
+            yield f"data: {count}\n\n"
+            count += 1
+            await asyncio.sleep(delay)
+    return StreamingResponse(counter_generator(start, delay), media_type="text/event-stream")
+
 
 @app.get("/youtube_search")
 async def youtube_search(keyword: str = Query(default="GraphRag")):
